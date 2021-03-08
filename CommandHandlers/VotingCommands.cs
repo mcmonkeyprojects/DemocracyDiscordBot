@@ -28,10 +28,10 @@ namespace DemocracyDiscordBot.CommandHandlers
         /// </summary>
         public void CMD_Ballot(string[] cmds, IUserMessage message)
         {
-            if (!IsUserAllowed(message))
-            {
-                return;
-            }
+            //if (!IsUserAllowed(message))
+            //{
+            //    return;
+            //}
             if (DemocracyBot.VoteTopicsSection.IsEmpty())
             {
                 SendGenericNegativeMessageReply(message, "No Current Voting", "Nothing to vote on. Check back later!");
@@ -58,10 +58,10 @@ namespace DemocracyDiscordBot.CommandHandlers
         /// <summary>
         /// Gets the topic section for a voting command. Also performs other basic prechecks.
         /// </summary>
-        public static FDSSection GetVoteTopicSection(string[] cmds, IUserMessage message, out string topic)
+        public static FDSSection GetVoteTopicSection(string[] cmds, IUserMessage message, bool requiresAuth = true, out string topic)
         {
             topic = null;
-            if (!IsUserAllowed(message))
+            if (requiresAuth && !IsUserAllowed(message))
             {
                 return null;
             }
@@ -98,7 +98,7 @@ namespace DemocracyDiscordBot.CommandHandlers
         /// </summary>
         public void CMD_Vote(string[] cmds, IUserMessage message)
         {
-            FDSSection topicSection = GetVoteTopicSection(cmds, message, out string topicName);
+            FDSSection topicSection = GetVoteTopicSection(cmds, message, false, out string topicName);
             if (topicSection == null)
             {
                 return;
